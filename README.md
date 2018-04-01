@@ -4,7 +4,9 @@ OPML Parser in .NET Core (C#)
 # What's OPMLCore.NET ?
 OPMLCore.NET is OPML Parser which is easy to use. 
 
-It is written in C# for .NET Core 2.0.
+It is written in C# and with Visual Studio Code for .NET Core Applications.
+
+It supports .NET Core 2.0.
 
 # Usage
  How to use is below.
@@ -33,4 +35,4 @@ foreach (Outline outline in opml.Body.Outlines)
 For more detail, show test code or source code.
 
 # License
-This Project's Lisense is MIT License.
+Lisense is MIT License.
