@@ -5,6 +5,19 @@ It is written in C# and with Visual Studio Code.
 
 It supports .NET Core 2.0.
 
+# Setting
+
+You shoud add project refference to your project.
+
+The below is sample `.csproj` which is added project refference.
+
+```
+  <ItemGroup>
+    <ProjectReference Include="..\src\OPMLCore.NET\OPMLCore.NET.csproj" />
+  </ItemGroup>
+```
+
+
 # Usage
  How to use is below.
 
