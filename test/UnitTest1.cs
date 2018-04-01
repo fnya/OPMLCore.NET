@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using System.Xml;
 using Xunit;
-using OPMLCore;
 using OPMLCore.NET;
 
 namespace test
@@ -182,6 +181,6 @@ namespace test
             xml.Append("</opml>");
 
             Assert.True(opml.ToString() == xml.ToString());
-        }      
+        }
     }
 }
