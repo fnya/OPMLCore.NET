@@ -1,10 +1,7 @@
 # OPMLCore.NET
-OPML Parser in .NET Core (C#)
+OPMLCore.NET is OPML Parser which easy to use for .NET Core Applications.
 
-# What's OPMLCore.NET ?
-OPMLCore.NET is OPML Parser which is easy to use. 
-
-It is written in C# and with Visual Studio Code for .NET Core Applications.
+It is written in C# and with Visual Studio Code.
 
 It supports .NET Core 2.0.
 
