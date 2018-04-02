@@ -16,7 +16,7 @@ The below is sample `.csproj` which is added project refference.
     <ProjectReference Include="..\src\OPMLCore.NET\OPMLCore.NET.csproj" />
   </ItemGroup>
 ```
-
+And then `dotnet restore`.
 
 # Usage
  How to use is below.
