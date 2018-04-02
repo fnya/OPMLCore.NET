@@ -7,7 +7,7 @@ namespace OPMLCore.NET {
     public class Head 
     {
         ///<summary>
-        /// Title
+        /// title
         ///</summary>
         public string Title { get; set; }
 
@@ -22,14 +22,54 @@ namespace OPMLCore.NET {
         public DateTime? DateModified { get; set; } = null;
 
         ///<summary>
-        /// OwnerName
+        /// ownerName
         ///</summary>
         public string OwnerName { get; set; }
 
         ///<summary>
-        /// OwnerEmail
+        /// ownerEmail
         ///</summary>
         public string OwnerEmail { get; set; }
+
+        ///<summary>
+        /// ownerId
+        ///</summary>
+        public string OwnerId { get; set;}
+
+        ///<summary>
+        /// docs
+        ///</summary>
+        public string Docs { get; set;}
+
+        ///<summary>
+        /// expansionState
+        ///</summary>
+        public List<string> ExpansionState { get; set; } = new List<string>();
+
+        ///<summary>
+        /// vertScrollState
+        ///</summary>
+        public string VertScrollState { get; set; }
+
+        ///<summary>
+        /// windowTop
+        ///</summary>
+        public string WindowTop { get; set; }
+
+        ///<summary>
+        /// windowLeft
+        ///</summary>
+        public string WindowLeft { get; set; }
+
+        ///<summary>
+        /// windowBottom
+        ///</summary>
+        public string WindowBottom { get; set; }
+
+        ///<summary>
+        /// windowRight
+        ///</summary>
+        public string WindowRight { get; set; }
 
         ///<summary>
         /// Constructor
@@ -49,11 +89,19 @@ namespace OPMLCore.NET {
             {
                 foreach (XmlNode node in element.ChildNodes) 
                 {
-                    Title        = GetStringValue(node, "title", Title);
-                    DateCreated  = GetDateTimeValue(node, "dateCreated", DateCreated);
+                    Title = GetStringValue(node, "title", Title);
+                    DateCreated = GetDateTimeValue(node, "dateCreated", DateCreated);
                     DateModified = GetDateTimeValue(node, "dateModified", DateModified);
-                    OwnerName    = GetStringValue(node, "ownerName", OwnerName);
-                    OwnerEmail   = GetStringValue(node, "ownerEmail", OwnerEmail);
+                    OwnerName = GetStringValue(node, "ownerName", OwnerName);
+                    OwnerEmail = GetStringValue(node, "ownerEmail", OwnerEmail);
+                    OwnerId = GetStringValue(node, "ownerId", OwnerId);
+                    Docs = GetStringValue(node, "docs", Docs);
+                    ExpansionState = GetExpansionState(node, "expansionState", ExpansionState);
+                    VertScrollState = GetStringValue(node, "vertScrollState", VertScrollState);
+                    WindowTop = GetStringValue(node, "windowTop", WindowTop);
+                    WindowLeft = GetStringValue(node, "windowLeft", WindowLeft);
+                    WindowBottom = GetStringValue(node, "windowBottom", WindowBottom);
+                    WindowRight = GetStringValue(node, "windowRight", WindowRight);
                 }
             }
         }
@@ -86,6 +134,26 @@ namespace OPMLCore.NET {
             }
         }    
 
+        private List<string> GetExpansionState(XmlNode node, string name, List<string> value)
+        {
+            if (node.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
+            {
+                List<string> list = new List<string>();
+                var items = node.InnerText.Split(',');
+                foreach(var item in items) 
+                {
+                    list.Add(item.Trim());
+                }
+                return list;
+
+            } else if (!node.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return value;
+            } else {
+                return new List<string>();
+            }
+        }
+
         public override string ToString() 
         {
             StringBuilder buf = new StringBuilder();
@@ -95,8 +163,15 @@ namespace OPMLCore.NET {
             buf.Append(GetNodeString("dateModified", DateModified));
             buf.Append(GetNodeString("ownerName", OwnerName));
             buf.Append(GetNodeString("ownerEmail", OwnerEmail));
+            buf.Append(GetNodeString("ownerId", OwnerId)); 
+            buf.Append(GetNodeString("docs", Docs)); 
+            buf.Append(GetNodeString("expansionState", ExpansionState));
+            buf.Append(GetNodeString("vertScrollState", VertScrollState));
+            buf.Append(GetNodeString("windowTop", WindowTop));
+            buf.Append(GetNodeString("windowLeft", WindowLeft));
+            buf.Append(GetNodeString("windowBottom", WindowBottom));
+            buf.Append(GetNodeString("windowRight", WindowRight));
             buf.Append("</head>\r\n");
-
             return buf.ToString();
         }
 
@@ -117,6 +192,22 @@ namespace OPMLCore.NET {
             } else {
                 return $"<{name}>{value?.ToString("R")}</{name}>\r\n";
             }
-        }           
+        }         
+
+        private string GetNodeString(string name, List<string> value)
+        {
+            if (value.Count == 0) {
+                return string.Empty;
+            }
+
+            StringBuilder buf = new StringBuilder();
+            foreach (var item in value)
+            {
+                buf.Append(item);
+                buf.Append(",");
+            }
+            
+            return $"<{name}>{buf.Remove(buf.Length - 1, 1).ToString()}</{name}>\r\n";
+        }  
     }
 }

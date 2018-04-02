@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using Xunit;
@@ -20,6 +21,14 @@ namespace test
             xml.Append("<dateModified>Tue, 02 Aug 2005 21:42:48 GMT</dateModified>");
             xml.Append("<ownerName>fnya</ownerName>");
             xml.Append("<ownerEmail>fnya@example.com</ownerEmail>");
+            xml.Append("<ownerId>http://news.com.com/</ownerId>");
+            xml.Append("<docs>http://news.com.com/</docs>");
+            xml.Append("<expansionState>1, 6, 13, 16, 18, 20</expansionState>");
+            xml.Append("<vertScrollState>1</vertScrollState>");
+            xml.Append("<windowTop>106</windowTop>");
+            xml.Append("<windowLeft>106</windowLeft>");
+            xml.Append("<windowBottom>558</windowBottom>");
+            xml.Append("<windowRight>479</windowRight>");
             xml.Append("</head>");
             xml.Append("<body>");
             xml.Append("<outline ");
@@ -44,14 +53,26 @@ namespace test
             Assert.True(opml.Head.DateModified == DateTime.Parse("Tue, 02 Aug 2005 21:42:48 GMT"));
             Assert.True(opml.Head.OwnerName == "fnya");
             Assert.True(opml.Head.OwnerEmail == "fnya@example.com");
-            Assert.True(opml.Body.Outlines[0].Text == "CNET News.com");
-            Assert.True(opml.Body.Outlines[0].Description == "Tech news and business reports by CNET News.com.");
-            Assert.True(opml.Body.Outlines[0].HTMLUrl == "http://news.com.com/");
-            Assert.True(opml.Body.Outlines[0].Language == "unknown");
-            Assert.True(opml.Body.Outlines[0].Title == "CNET News.com");
-            Assert.True(opml.Body.Outlines[0].Type == "rss");
-            Assert.True(opml.Body.Outlines[0].Version == "RSS2");
-            Assert.True(opml.Body.Outlines[0].XMLUrl == "http://news.com.com/2547-1_3-0-5.xml");
+            Assert.True(opml.Head.OwnerId == "http://news.com.com/");
+            Assert.True(opml.Head.Docs == "http://news.com.com/");
+            Assert.True(opml.Head.ExpansionState.ToArray().SequenceEqual("1,6,13,16,18,20".Split(',')));
+            Assert.True(opml.Head.VertScrollState == "1");
+            Assert.True(opml.Head.WindowTop == "106");
+            Assert.True(opml.Head.WindowLeft == "106");
+            Assert.True(opml.Head.WindowBottom == "558");
+            Assert.True(opml.Head.WindowRight == "479");
+
+            foreach (var outline in opml.Body.Outlines)
+            {
+                Assert.True(outline.Text == "CNET News.com");
+                Assert.True(outline.Description == "Tech news and business reports by CNET News.com.");
+                Assert.True(outline.HTMLUrl == "http://news.com.com/");
+                Assert.True(outline.Language == "unknown");
+                Assert.True(outline.Title == "CNET News.com");
+                Assert.True(outline.Type == "rss");
+                Assert.True(outline.Version == "RSS2");
+                Assert.True(outline.XMLUrl == "http://news.com.com/2547-1_3-0-5.xml");
+            }
         }
 
         [Fact]
@@ -79,9 +100,14 @@ namespace test
             doc.LoadXml(xml.ToString());
             Opml opml = new Opml(doc);
 
-            Assert.True(opml.Body.Outlines[0].Outlines[0].Text == "washingtonpost.com");
-            Assert.True(opml.Body.Outlines[0].Outlines[0].HTMLUrl == "http://www.washingtonpost.com");
-            Assert.True(opml.Body.Outlines[0].Outlines[0].XMLUrl == "http://www.washingtonpost.com/rss.xml");
+            foreach (var outline in opml.Body.Outlines)
+            {
+                foreach(var childOutline in outline.Outlines) {
+                    Assert.True(childOutline.Text == "washingtonpost.com");
+                    Assert.True(childOutline.HTMLUrl == "http://www.washingtonpost.com");
+                    Assert.True(childOutline.XMLUrl == "http://www.washingtonpost.com/rss.xml");
+                }
+            }
         }
 
        [Fact]
@@ -97,6 +123,19 @@ namespace test
             head.DateModified = DateTime.Parse("Tue, 02 Aug 2005 21:42:48 GMT");
             head.OwnerName = "fnya";
             head.OwnerEmail = "fnya@example.com";
+            head.OwnerId = "http://news.com.com/";
+            head.Docs = "http://news.com.com/";
+            head.ExpansionState.Add("1");
+            head.ExpansionState.Add("6");
+            head.ExpansionState.Add("13");
+            head.ExpansionState.Add("16");
+            head.ExpansionState.Add("18");
+            head.ExpansionState.Add("20");
+            head.VertScrollState = "1";
+            head.WindowTop = "106";
+            head.WindowLeft = "106";
+            head.WindowBottom = "558";
+            head.WindowRight = "479";
             opml.Head = head;
 
             Outline outline = new Outline();
@@ -122,6 +161,14 @@ namespace test
             xml.Append("<dateModified>Wed, 03 Aug 2005 06:42:48 GMT</dateModified>\r\n");
             xml.Append("<ownerName>fnya</ownerName>\r\n");
             xml.Append("<ownerEmail>fnya@example.com</ownerEmail>\r\n");
+            xml.Append("<ownerId>http://news.com.com/</ownerId>\r\n");
+            xml.Append("<docs>http://news.com.com/</docs>\r\n");
+            xml.Append("<expansionState>1,6,13,16,18,20</expansionState>\r\n");
+            xml.Append("<vertScrollState>1</vertScrollState>\r\n");
+            xml.Append("<windowTop>106</windowTop>\r\n");
+            xml.Append("<windowLeft>106</windowLeft>\r\n");
+            xml.Append("<windowBottom>558</windowBottom>\r\n");
+            xml.Append("<windowRight>479</windowRight>\r\n");
             xml.Append("</head>\r\n");
             xml.Append("<body>\r\n");
             xml.Append("<outline ");
