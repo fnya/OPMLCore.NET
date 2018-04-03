@@ -33,6 +33,10 @@ namespace test
             xml.Append("<body>");
             xml.Append("<outline ");
             xml.Append("text=\"CNET News.com\" ");
+            xml.Append("isComment=\"true\" ");
+            xml.Append("isBreakpoint=\"true\" ");
+            xml.Append("created=\"Tue, 02 Aug 2005 21:42:48 GMT\" ");
+            xml.Append("category=\"/Harvard/Berkman,/Politics\" ");
             xml.Append("description=\"Tech news and business reports by CNET News.com.\" ");
             xml.Append("htmlUrl=\"http://news.com.com/\" ");
             xml.Append("language=\"unknown\" ");
@@ -65,6 +69,10 @@ namespace test
             foreach (var outline in opml.Body.Outlines)
             {
                 Assert.True(outline.Text == "CNET News.com");
+                Assert.True(outline.IsComment == "true");
+                Assert.True(outline.IsBreakpoint == "true");
+                Assert.True(outline.Created == DateTime.Parse("Tue, 02 Aug 2005 21:42:48 GMT"));
+                Assert.True(outline.Category.ToArray().SequenceEqual("/Harvard/Berkman,/Politics".Split(',')));
                 Assert.True(outline.Description == "Tech news and business reports by CNET News.com.");
                 Assert.True(outline.HTMLUrl == "http://news.com.com/");
                 Assert.True(outline.Language == "unknown");
@@ -119,8 +127,8 @@ namespace test
 
             Head head = new Head();
             head.Title = "mySubscriptions.opml";
-            head.DateCreated = DateTime.Parse("Sat, 18 Jun 2005 12:11:52 GMT");
-            head.DateModified = DateTime.Parse("Tue, 02 Aug 2005 21:42:48 GMT");
+            head.DateCreated = DateTime.Parse("Sat, 18 Jun 2005 12:11:52 GMT").ToUniversalTime();
+            head.DateModified = DateTime.Parse("Tue, 02 Aug 2005 21:42:48 GMT").ToUniversalTime();
             head.OwnerName = "fnya";
             head.OwnerEmail = "fnya@example.com";
             head.OwnerId = "http://news.com.com/";
@@ -140,6 +148,11 @@ namespace test
 
             Outline outline = new Outline();
             outline.Text = "CNET News.com";
+            outline.IsComment = "true";
+            outline.IsBreakpoint = "true";
+            outline.Created = DateTime.Parse("Tue, 02 Aug 2005 21:42:48 GMT").ToUniversalTime();
+            outline.Category.Add("/Harvard/Berkman");
+            outline.Category.Add("/Politics");
             outline.Description = "Tech news and business reports by CNET News.com.";
             outline.HTMLUrl = "http://news.com.com/";
             outline.Language = "unknown";
@@ -157,8 +170,8 @@ namespace test
             xml.Append("<opml version=\"2.0\">\r\n");
             xml.Append("<head>\r\n");
             xml.Append("<title>mySubscriptions.opml</title>\r\n");
-            xml.Append("<dateCreated>Sat, 18 Jun 2005 21:11:52 GMT</dateCreated>\r\n");
-            xml.Append("<dateModified>Wed, 03 Aug 2005 06:42:48 GMT</dateModified>\r\n");
+            xml.Append("<dateCreated>Sat, 18 Jun 2005 12:11:52 GMT</dateCreated>\r\n");
+            xml.Append("<dateModified>Tue, 02 Aug 2005 21:42:48 GMT</dateModified>\r\n");
             xml.Append("<ownerName>fnya</ownerName>\r\n");
             xml.Append("<ownerEmail>fnya@example.com</ownerEmail>\r\n");
             xml.Append("<ownerId>http://news.com.com/</ownerId>\r\n");
@@ -173,6 +186,10 @@ namespace test
             xml.Append("<body>\r\n");
             xml.Append("<outline ");
             xml.Append("text=\"CNET News.com\" ");
+            xml.Append("isComment=\"true\" ");
+            xml.Append("isBreakpoint=\"true\" ");
+            xml.Append("created=\"Tue, 02 Aug 2005 21:42:48 GMT\" ");
+            xml.Append("category=\"/Harvard/Berkman,/Politics\" ");
             xml.Append("description=\"Tech news and business reports by CNET News.com.\" ");
             xml.Append("htmlUrl=\"http://news.com.com/\" ");
             xml.Append("language=\"unknown\" ");
@@ -185,6 +202,9 @@ namespace test
             xml.Append("</opml>");
 
             Assert.True(opml.ToString() == xml.ToString());
+
+            // Console.WriteLine(xml.ToString());
+            // Console.WriteLine(opml.ToString());
         }
 
        [Fact]
