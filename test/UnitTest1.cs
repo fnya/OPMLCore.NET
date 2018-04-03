@@ -203,8 +203,6 @@ namespace test
 
             Assert.True(opml.ToString() == xml.ToString());
 
-            // Console.WriteLine(xml.ToString());
-            // Console.WriteLine(opml.ToString());
         }
 
        [Fact]
