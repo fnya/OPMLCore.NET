@@ -247,5 +247,37 @@ namespace test
 
             Assert.True(opml.ToString() == xml.ToString());
         }
+
+        [Fact]
+        public void EntitiesTest() {
+            Opml opml = new Opml();
+            opml.Encoding = "UTF-8";
+            opml.Version = "2.0";
+
+            opml.Head.Title = "Things & Stuff";
+            opml.Head.OwnerName = "Me, myself & I";
+
+            Outline outline = new Outline();
+            outline.Text = "Things & Stuff News";
+            outline.Category.Add("Things & Stuff");
+            outline.Description = "Things & Stuff News";
+            outline.Title = "Things & Stuff News";
+
+            opml.Body.Outlines.Add(outline);
+
+            StringBuilder xml = new StringBuilder();
+            xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n");
+            xml.Append("<opml version=\"2.0\">\r\n");
+            xml.Append("<head>\r\n");
+            xml.Append("<title>Things &amp; Stuff</title>\r\n");
+            xml.Append("<ownerName>Me, myself &amp; I</ownerName>\r\n");
+            xml.Append("</head>\r\n");
+            xml.Append("<body>\r\n");
+            xml.Append("<outline text=\"Things &amp; Stuff News\" category=\"Things &amp; Stuff\" description=\"Things &amp; Stuff News\" title=\"Things &amp; Stuff News\" />\r\n");
+            xml.Append("</body>\r\n");
+            xml.Append("</opml>");
+
+            Assert.True(opml.ToString() == xml.ToString());
+        }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Xml;
 using System.Collections.Generic;
+using System.Security;
 
 namespace OPMLCore.NET {
     public class Outline 
@@ -170,7 +171,7 @@ namespace OPMLCore.NET {
             {
                 return string.Empty;
             } else {
-                return $" {name}=\"{value}\"";
+                return $" {name}=\"{SecurityElement.Escape(value)}\"";
             }
         }
 
@@ -193,7 +194,7 @@ namespace OPMLCore.NET {
             StringBuilder buf = new StringBuilder();
             foreach (var item in value)
             {
-                buf.Append(item);
+                buf.Append(SecurityElement.Escape(item));
                 buf.Append(",");
             }
             
