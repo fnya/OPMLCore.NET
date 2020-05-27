@@ -247,5 +247,40 @@ namespace test
 
             Assert.True(opml.ToString() == xml.ToString());
         }
+
+        [Fact]
+        public void TestOptionalCategory()
+        {
+            StringBuilder xml = new StringBuilder();
+            xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+            xml.Append("<opml version=\"2.0\">");
+            xml.Append("<head>");
+            xml.Append("<title>mySubscriptions.opml</title>");
+            xml.Append("<dateCreated>Sat, 18 Jun 2005 12:11:52 GMT</dateCreated>");
+            xml.Append("</head>");
+            xml.Append("<body>");
+            xml.Append("<outline ");
+            xml.Append("text=\"CNET News.com\" ");
+            xml.Append("type=\"rss\" ");
+            xml.Append("xmlUrl=\"http://news.com.com/2547-1_3-0-5.xml\" ");
+            xml.Append("/>");
+            xml.Append("</body>");
+            xml.Append("</opml>");
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.ToString());
+            Opml opml = new Opml(doc);
+
+            Assert.True(opml.Head.Title == "mySubscriptions.opml");
+            Assert.True(opml.Head.DateCreated == DateTime.Parse("Sat, 18 Jun 2005 12:11:52 GMT"));
+            Assert.True(opml.Head.ExpansionState.Count == 0);
+
+            foreach (var outline in opml.Body.Outlines) {
+                Assert.True(outline.Text == "CNET News.com");
+                Assert.True(outline.Category.Count == 0);
+                Assert.True(outline.Type == "rss");
+                Assert.True(outline.XMLUrl == "http://news.com.com/2547-1_3-0-5.xml");
+            }
+        }
     }
 }

@@ -125,7 +125,7 @@ namespace OPMLCore.NET {
         private List<string> GetCategoriesAtrribute(XmlElement element, string name)
         {
                 List<string> list = new List<string>();
-                var items = element.GetAttribute(name).Split(',');
+                var items = element.GetAttribute(name).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach(var item in items) 
                 {
                     list.Add(item.Trim());
