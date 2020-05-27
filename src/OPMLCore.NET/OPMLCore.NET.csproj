@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.1</Version>
+    <PackageProjectUrl>https://github.com/fnya/OPMLCore.NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fnya/OPMLCore.NET</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Authors>fnya</Authors>
+    <Company>fnya</Company>
+    <Description>OPMLCore.NET is OPML Parser which easy to use for .NET Core Applications.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>opml</PackageTags>
   </PropertyGroup>
 
 </Project>
