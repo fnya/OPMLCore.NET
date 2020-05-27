@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Xml;
 using System.Collections.Generic;
+using System.Security;
 
 namespace OPMLCore.NET {
     public class Head 
@@ -181,7 +182,7 @@ namespace OPMLCore.NET {
             {
                 return string.Empty;
             } else {
-                return $"<{name}>{value}</{name}>\r\n";
+                return $"<{name}>{SecurityElement.Escape(value)}</{name}>\r\n";
             }
         }
         private string GetNodeString(string name, DateTime? value)
