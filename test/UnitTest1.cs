@@ -249,7 +249,7 @@ namespace test
         }
 
         [Fact]
-        public void TestOptionalCategory()
+        public void OptionalCategoryTest()
         {
             StringBuilder xml = new StringBuilder();
             xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
