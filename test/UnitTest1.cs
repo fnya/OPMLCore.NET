@@ -247,5 +247,39 @@ namespace test
 
             Assert.True(opml.ToString() == xml.ToString());
         }
+
+        [Fact]
+        public void WithNamespaceTest() {
+            Opml opml = new Opml();
+            opml.Encoding = "UTF-8";
+            opml.Version = "2.0";
+            opml.UseNamespace = true;
+
+            Head head = new Head();
+            head.Title = "mySubscriptions.opml";
+            opml.Head = head;
+
+            Outline outline = new Outline();
+            outline.Text = "CNET News.com";
+
+            Body body = new Body();
+            body.Outlines.Add(outline);
+            opml.Body = body;
+
+            StringBuilder xml = new StringBuilder();
+            xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n");
+            xml.Append("<opml version=\"2.0\" xmlns=\"http://opml.org/spec2\">\r\n");
+            xml.Append("<head>\r\n");
+            xml.Append("<title>mySubscriptions.opml</title>\r\n");
+            xml.Append("</head>\r\n");
+            xml.Append("<body>\r\n");
+            xml.Append("<outline ");
+            xml.Append("text=\"CNET News.com\" ");
+            xml.Append("/>\r\n");
+            xml.Append("</body>\r\n");
+            xml.Append("</opml>");
+
+            Assert.True(opml.ToString() == xml.ToString());
+        }
     }
 }

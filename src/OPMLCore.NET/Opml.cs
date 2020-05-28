@@ -4,6 +4,8 @@ using System.Xml;
 
 namespace OPMLCore.NET {
     public class Opml {
+        private const string NAMESPACE_URI = "http://opml.org/spec2";
+
         ///<summary>
         /// Version of OPML
         ///</summary>
@@ -13,6 +15,11 @@ namespace OPMLCore.NET {
         /// Encoding of OPML
         ///</summary>
         public string Encoding { get; set;}
+
+        /// <summary>
+        /// Include namespace in XML
+        /// </summary>
+        public bool UseNamespace { get; set;}
 
         ///<summary>
         /// Head of OPML
@@ -81,7 +88,13 @@ namespace OPMLCore.NET {
             String ecoding = string.IsNullOrEmpty(Encoding)?"UTF-8":Encoding;
             buf.Append($"<?xml version=\"1.0\" encoding=\"{ecoding}\" ?>\r\n");
             String version = string.IsNullOrEmpty(Version)?"2.0":Version;
-            buf.Append($"<opml version=\"{version}\">\r\n");
+
+            if (UseNamespace) {
+                buf.Append($"<opml version=\"{version}\" xmlns=\"{NAMESPACE_URI}\">\r\n");
+            } else {
+                buf.Append($"<opml version=\"{version}\">\r\n");
+            }
+
             buf.Append(Head.ToString());
             buf.Append(Body.ToString());
             buf.Append("</opml>");
